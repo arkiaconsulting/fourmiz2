@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Silk.NET.Maths;
+using SkiaSharp;
 
 namespace MainApp;
 
@@ -6,12 +7,11 @@ internal sealed class World
 {
     private readonly List<Fourmiz> _fourmizs = [];
 
-    public World(uint fourmizCount, SKPoint worldBoundaries)
+    public World(uint fourmizCount, Vector2D<double> worldBoundaries)
     {
         for (var i = 0; i < fourmizCount; i++)
         {
-
-            _fourmizs.Add(new(new SKPoint(Random.Shared.Next((int)worldBoundaries.X), Random.Shared.Next((int)worldBoundaries.Y / 2)), worldBoundaries));
+            _fourmizs.Add(new(new Vector2D<double>(Random.Shared.Next((int)worldBoundaries.X), Random.Shared.Next((int)worldBoundaries.Y / 2)), worldBoundaries));
         }
     }
 

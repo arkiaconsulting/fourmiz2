@@ -8,4 +8,8 @@ internal static class Constants
     {
         Color = SKColors.Blue,
     };
+
+    public const double MaxFourmizMass = 700;
+
+    public const double MaxFourmizSpeed = 5;
 }

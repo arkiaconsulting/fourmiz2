@@ -9,7 +9,7 @@ internal sealed class FourmizApp : IDisposable
 {
     private readonly IWindow _window;
     private readonly WindowOptions _options;
-    private readonly SKPoint _worldBoundaries;
+    private readonly Vector2D<double> _worldBoundaries;
     private GRGlInterface _grGlInterface = default!;
     private GRContext _grContext = default!;
     private GRBackendRenderTarget _renderTarget = default!;
@@ -17,7 +17,7 @@ internal sealed class FourmizApp : IDisposable
     private SKCanvas _canvas = default!;
     private World _world = default!;
 
-    public FourmizApp(SKPoint worldBoundaries)
+    public FourmizApp(Vector2D<double> worldBoundaries)
     {
         GlfwWindowing.Use();
 
