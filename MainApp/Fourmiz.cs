@@ -20,28 +20,12 @@ internal sealed class Fourmiz
 
     public void Update(double elapsed)
     {
-        if (_position.X > _worldBoundaries.X)
-        {
-            _position.X = 0;
-        }
-
-        if (_position.Y > _worldBoundaries.Y)
-        {
-            _position.Y = 0;
-        }
-
-        if (_position.X < 0)
-        {
-            _position.X = _worldBoundaries.X;
-        }
-
-        if (_position.Y < 0)
-        {
-            _position.Y = _worldBoundaries.Y;
-        }
-
         var wander = Wander();
-        var acceleration = wander / _mass;
+        var boundariesRepulsion = BoundariesRepulsion();
+
+        var steering = wander + boundariesRepulsion;
+
+        var acceleration = steering / _mass;
         var dv = acceleration * elapsed;
         _velocity += dv;
         _velocity = _velocity.Truncate(_maxSpeed);
@@ -61,8 +45,8 @@ internal sealed class Fourmiz
         }
 
         var circleDistance = 300;
-        var circleRadius = 300;
-        var angleChange = 45;
+        var circleRadius = 600;
+        var angleChange = 90;
 
         // Calculate the circle center
         var circleCenter = Vector2D.Normalize(_velocity) * circleDistance;
@@ -81,5 +65,46 @@ internal sealed class Fourmiz
         var wanderForce = circleCenter + displacement;
 
         return wanderForce;
+    }
+
+    private Vector2D<double> BoundariesRepulsion()
+    {
+        var desired = Vector2D<double>.Zero;
+        const double repulsionDistance = 30;
+
+        var distanceToTop = _position.Y;
+        // Either it's in repulsion distance, or it's outside the boundaries
+        if (distanceToTop < repulsionDistance || distanceToTop < 0)
+        {
+            desired += new Vector2D<double>(0, 1 / Math.Abs(distanceToTop));
+        }
+
+        var distanceToBottom = _worldBoundaries.Y - _position.Y;
+        // Either it's in repulsion distance, or it's outside the boundaries
+        if (distanceToBottom < repulsionDistance || distanceToBottom < 0)
+        {
+            desired += new Vector2D<double>(0, -1 / Math.Abs(distanceToBottom));
+        }
+
+        var distanceToLeft = _position.X;
+        // Either it's in repulsion distance, or it's outside the boundaries
+        if (distanceToLeft < repulsionDistance || distanceToLeft < 0)
+        {
+            desired += new Vector2D<double>(1 / Math.Abs(distanceToLeft), 0);
+        }
+
+        var distanceToRight = _worldBoundaries.X - _position.X;
+        // Either it's in repulsion distance, or it's outside the boundaries
+        if (distanceToRight < repulsionDistance || distanceToRight < 0)
+        {
+            desired += new Vector2D<double>(-1 / Math.Abs(distanceToRight), 0);
+        }
+
+        if (desired == Vector2D<double>.Zero)
+        {
+            return Vector2D<double>.Zero;
+        }
+
+        return Vector2D.Normalize(desired) * _mass * 10;
     }
 }

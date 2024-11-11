@@ -9,7 +9,7 @@ internal static class Constants
         Color = SKColors.Blue,
     };
 
-    public const double MaxFourmizMass = 100;
+    public const double MaxFourmizMass = 200;
 
-    public const double MaxFourmizSpeed = 3;
+    public const double MaxFourmizSpeed = 2;
 }
