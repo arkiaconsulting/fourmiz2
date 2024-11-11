@@ -16,6 +16,11 @@ internal static class Constants
         Color = SKColors.Green,
     };
 
+    public static readonly SKPaint Black = new()
+    {
+        Color = SKColors.Black,
+    };
+
     public const double MaxFourmizMass = 200;
 
     public const double MaxFourmizSpeed = 2;

@@ -11,6 +11,8 @@ internal sealed class Fourmiz
     private readonly double _mass = double.Clamp(Constants.Randomizer.NextDouble() * Constants.MaxFourmizMass, Constants.MaxFourmizMass / 8, Constants.MaxFourmizMass);
     private readonly double _maxSpeed = double.Clamp(Constants.Randomizer.NextDouble() * Constants.MaxFourmizSpeed, Constants.MaxFourmizSpeed / 3, Constants.MaxFourmizSpeed);
     private double _wanderAngle = 0;
+    private double _energy = 100;
+
     public Fourmiz(Vector2D<double> initialPosition, Vector2D<double> worldBoundaries)
     {
         _position = initialPosition;
@@ -19,6 +21,12 @@ internal sealed class Fourmiz
 
     public void Update(double elapsed)
     {
+        if (_energy <= 0)
+        {
+            return;
+        }
+
+        // Handle movement
         var wander = Wander();
         var boundariesRepulsion = BoundariesRepulsion();
 
@@ -29,10 +37,20 @@ internal sealed class Fourmiz
         _velocity += dv;
         _velocity = _velocity.Truncate(_maxSpeed);
         _position += _velocity;
+
+        // Handle energy
+        _energy -= _velocity.Length * _mass * elapsed / 10;
     }
 
     public void Draw(SKCanvas canvas)
     {
+        if (_energy <= 0)
+        {
+            canvas.DrawCircle((float)_position.X, (float)_position.Y, 10, Constants.Black);
+
+            return;
+        }
+
         canvas.DrawCircle((float)_position.X, (float)_position.Y, 10, Constants.Blue);
     }
 
