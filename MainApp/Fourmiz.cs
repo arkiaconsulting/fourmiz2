@@ -5,12 +5,11 @@ namespace MainApp;
 
 internal sealed class Fourmiz
 {
-    private static readonly Random _random = new();
     private Vector2D<double> _position;
     private readonly Vector2D<double> _worldBoundaries;
     private Vector2D<double> _velocity = Some.RandomNormalizedVector / 1000;
-    private readonly double _mass = double.Clamp(_random.NextDouble() * Constants.MaxFourmizMass, Constants.MaxFourmizMass / 8, Constants.MaxFourmizMass);
-    private readonly double _maxSpeed = double.Clamp(_random.NextDouble() * Constants.MaxFourmizSpeed, Constants.MaxFourmizSpeed / 3, Constants.MaxFourmizSpeed);
+    private readonly double _mass = double.Clamp(Constants.Randomizer.NextDouble() * Constants.MaxFourmizMass, Constants.MaxFourmizMass / 8, Constants.MaxFourmizMass);
+    private readonly double _maxSpeed = double.Clamp(Constants.Randomizer.NextDouble() * Constants.MaxFourmizSpeed, Constants.MaxFourmizSpeed / 3, Constants.MaxFourmizSpeed);
     private double _wanderAngle = 0;
     public Fourmiz(Vector2D<double> initialPosition, Vector2D<double> worldBoundaries)
     {
@@ -60,7 +59,7 @@ internal sealed class Fourmiz
 
         // Change wanderAngle just a bit, so it
         // won't have the same value in the next frame.
-        _wanderAngle += _random.NextDouble() * angleChange - angleChange * 0.5;
+        _wanderAngle += Constants.Randomizer.NextDouble() * angleChange - angleChange * 0.5;
 
         var wanderForce = circleCenter + displacement;
 
